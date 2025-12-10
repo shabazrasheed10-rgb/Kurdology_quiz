@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en"> 
- <head> 
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>Medical Terminology Quiz</title> 
-  <script src="https://cdn.tailwindcss.com"></script> 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"> 
+<html lang="ku" dir="rtl">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kurdology Quiz</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet">
   <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -14,17 +14,17 @@
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            
             padding: 20px;
         }
-      
+
         .option-button {
             transition: all 0.2s ease-in-out;
             cursor: pointer;
             display: flex;
             align-items: center;
+            /* Elements are naturally spaced out in RTL */
             justify-content: space-between;
-            text-align: left;
+            text-align: right;
         }
         .option-button:hover:not(.answered) {
             transform: translateY(-2px);
@@ -34,196 +34,158 @@
         .feedback-icon {
             width: 24px;
             height: 24px;
-            margin-left: 10px;
+            margin-left: 10px; /* Space between text and icon in RTL */
             opacity: 0;
             transition: opacity 0.3s;
         }
         .feedback-icon-visible {
             opacity: 1;
         }
-    </style> 
- </head> 
- <body> 
-  <div id="quiz-container" class="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-6 md:p-10"> <!-- Header: Score and Progress --> 
-   <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200"> 
-    <h1 class="text-3xl font-bold text-blue-600">Terminology Quiz Lec-7</h1> 
+    </style>
+ </head>
+ <body>
+  <div id="quiz-container" class="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-6 md:p-10">
+
+   <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200">
     <div class="text-lg font-semibold text-gray-700">
-      Score: <span id="score-display" class="text-green-600">0</span> / <span id="total-questions">30</span> 
-    </div> 
-   </div> <!-- Question Display --> 
-   <div id="question-card" class="mb-8 min-h-24"> 
-    <p class="text-2xl font-semibold text-gray-800 mb-4" id="question-text"> Loading question... </p> 
-    <div id="options-container" class="space-y-4"> 
-    </div> 
-   </div> <!-- Navigation and Progress --> 
-   <div class="flex justify-between items-center pt-4 border-t border-gray-200"> 
+      Score: <span id="score-display" class="text-green-600">0</span> / <span id="total-questions">30</span>
+    </div>
+    <h1 class="text-3xl font-bold text-[#6D9BCA]">Kurdology_Quiz_Lec1</h1>
+   </div>
+
+   <div id="question-card" class="mb-8 min-h-24">
+    <p class="text-2xl font-semibold text-gray-800 mb-4" id="question-text"> Loading question... </p>
+    <div id="options-container" class="space-y-4">
+    </div>
+   </div>
+
+   <div class="flex justify-between items-center pt-4 border-t border-gray-200">
+    <button id="next-button" onclick="nextQuestion()" class="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl shadow-lg hover:bg-blue-700 transition duration-150 ease-in-out disabled:bg-gray-400" disabled> Next Question </button>
     <div class="text-lg text-gray-600 font-medium">
-      Question <span id="current-q-number">0</span> of 30 
-    </div> <button id="next-button" onclick="nextQuestion()" class="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl shadow-lg hover:bg-blue-700 transition duration-150 ease-in-out disabled:bg-gray-400" disabled> Next Question </button> 
-   </div> <!-- Final Score Modal --> 
-   <div id="final-score-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50"> 
-    <div class="bg-white rounded-xl p-8 text-center shadow-2xl w-full max-w-sm"> 
-     <h2 class="text-4xl font-extrabold text-blue-600 mb-4">Quiz Complete!</h2> 
-     <p class="text-xl text-gray-700 mb-6">Your final score is:</p> 
-     <p class="text-6xl font-black text-green-700 mb-8" id="final-score-text">0 / 20</p> <button onclick="window.location.reload()" class="px-6 py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition duration-150"> Start Over </button> 
-    </div> 
-   </div> 
-  </div> 
+      Question <span id="current-q-number">0</span> of 21
+    </div>
+   </div>
+
+   <div id="final-score-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-xl p-8 text-center shadow-2xl w-full max-w-sm">
+     <h2 class="text-4xl font-extrabold text-blue-600 mb-4">!Quiz Complete</h2>
+     <p class="text-xl text-gray-700 mb-6">:Your final score is</p>
+     <p class="text-6xl font-black text-green-700 mb-8" id="final-score-text">0 / 20</p>
+     <button onclick="window.location.reload()" class="px-6 py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition duration-150"> Start Over </button>
+    </div>
+   </div>
+  </div>
   <script>
-      
+
         const quizData = [
-          
-          
+
+
   {
-    question: '1. What is the medical term for the accumulation of fluid in the peritoneal cavity? ',
-    options: ['A. Edema', 'B. Ascites', 'C. Pleurisy', 'D. Hydrocephalus', 'E. Ischemia'],
-    answer: 'B. Ascites'
+    question: '1. بەشەکانی فۆلکلۆر چەندن؟ ',
+    options: ['A. یەک', 'B. دوو', 'C. سێ', 'D. چوار', 'E. پێنج'],
+    answer: 'E. پێنج'
   },
   {
-    question: '2. "Coarctation" is defined as which of the following? ',
-    options: ['A. The expansion of a vessel wall', 'B. The rupture of a vessel', 'C. The compression of the wall of a vessel', 'D. The inflammation of a vessel', 'E. The formation of stones in a vessel'],
-    answer: 'C. The compression of the wall of a vessel'
+    question: '2. .ڕەخنە لە ژیانی کۆمەڵگە دەگرێت و شتە ناشرین و چەوتەکان دەخاتە ڕوو، و وەک کاردانەوەیەک بۆ ڕۆمانیك '
+    options: ['A. شیعر', 'B. ڕۆمان', 'C. ڕیالیزم', 'D. ڕۆمانسیزم', 'E. ئەدەبی کلاسیك'],
+    answer: 'C. ڕیالیزم'
   },
   {
-    question: '3. The protrusion of an organ or part through connective tissue or the wall of a cavity is known as: ',
-    options: ['A. Hernia', 'B. Fistula', 'C. Diverticulum', 'D. Prolapse', 'E. Laceration'],
-    answer: 'A. Hernia'
+    question: '3. .ناوی (خضر) ـە کوڕی شێخ ئەحمەدی شاوەیسی ئالی بەگی میکایلییە ',
+    options: ['A. نالی', 'B. سالم', 'C. مەلای جزیری', 'D. هێمن موکریانی', 'E. ئەحمەدی خانی'],
+    answer: 'A. نالی'
   },
   {
-    question: '4. Ischemia is defined as: ',
-    options: ['A. An increase in blood pressure', 'B. A bacterial infection of the blood', 'C. A reduction in blood supply to an organ or tissue', 'D. The complete absence of blood flow', 'E. An accumulation of fluid in the abdomen'],
-    answer: 'C. A reduction in blood supply to an organ or tissue'
+    question: '4. گرنگی بە مەسەلەی گشتی دەدات و لە مەسەلەی تایبەت دوور دەکەوێتەوە ',
+    options: ['A. ئەدەبی ڕۆمانسیزم', 'B. ڕیالیزم', 'C. شیعر', 'D. ئەدەبی کلاسیک', 'E. ڕۆمان'],
+    answer: 'D. ئەدەبی کلاسیک'
   },
   {
-    question: '5. Which term describes the yellowish discoloration of the skin and sclera due to hyperbilirubinemia? ',
-    options: ['A. Cyanosis', 'B. Erythema', 'C. Pallor', 'D. Jaundice', 'E. Urticaria'],
-    answer: 'D. Jaundice'
+    question: '5. پەخشانی ئەدەبی چەند جۆرە؟ ',
+    options: ['A. چوار', 'B. پێنج', 'C. شەش', 'D. حەوت', 'E. هەشت'],
+    answer: 'D. حەوت'
   },
   {
-    question: '6. An irregular wound or tear caused by severe blunt trauma is called a: ',
-    options: ['A. Incision', 'B. Laceration', 'C. Abrasion', 'D. Contusion', 'E. Biopsy'],
-    answer: 'B. Laceration'
+    question: '6. پارچەیەک نووسینی ئەدەبییە، بابەتێکی دیاریکراو دەگرێتە خۆی جا ئەو بابەتە بیرو بۆچوونێك یان داهێنانێك بێت',
+    options: ['A. چیڕۆک', 'B. وتار', 'C. خوتبە', 'D. ڕۆمان', 'E. ژیاننامە'],
+    answer: 'B. وتار'
   },
   {
-    question: '7. What is the medical term for an itching sensation of the skin? ',
-    options: ['A. Pruritis', 'B. Psoriasis', 'C. Purpura', 'D. Pyrosis', 'E. Alopecia'],
-    answer: 'A. Pruritis'
+    question: '7. بە پێی کام بۆچوونی پەیدابوونی زمان، زمان و مرۆڤ بە یەکەوە پەیدابوونە؟',
+    options: ['A. بۆچوونی بزاوتن', 'B. بۆچوونی پەیوەندی', 'C. بۆچوونی بانگ و قیژە', 'D. بۆچوونی ڕێکەوتن', 'E. بۆچوونی ئایینی'],
+    answer: 'E. بۆچوونی ئایینی'
   },
   {
-    question: '8. The suffix (-iasis) generally indicates: ',
-    options: ['A. Inflammation', 'B. A disease producing condition', 'C. Surgical removal', 'D. Formation of cells', 'E. Disintegration of tissue'],
-    answer: 'B. A disease producing condition'
+    question: '8. ڕێبازێکی ئەدەبی و هونەری فراوانە، لای هەندێ نووسەر بە تازە و نوێ دادەنرێت ',
+    options: ['A. شیعری کلاسیکی کوردی', 'B. ئەدەبی ڕیالیزم', 'C. شیعری ڕۆمانسیزمی کوردی', 'D. چیڕۆک', 'E. پەخشان'],
+    answer: 'C. شیعری ڕۆمانسیزمی کوردی'
   },
   {
-    question: '9. Which condition is defined as stones in the biliary passages? ',
-    options: ['A. Urolithiasis', 'B. Nephrolithiasis', 'C. Cholelithiasis', 'D. Cholecystitis', 'E. Appendicitis'],
-    answer: 'C. Cholelithiasis'
+    question: '9. ئەم خێزانە زمانە ئەو گەلانە دەگرێتەوە کە دەکەونە ناوەڕاستی ئاسیا تا ئەوپەڕی کەناری ڕۆژئاوای ئەوروپا: ',
+    options: ['A. سامی و حامی', 'B. هیندۆ ئەوروپی', 'C. تۆرانی', 'D. گروپی زمانە چینی و تبتیەکان', 'E. گروپی زمانە کۆرییەکان'],
+    answer: 'B. هیندۆ ئەوروپی'
   },
   {
-    question: '10. The suffix (-itis) indicates: ',
-    options: ['A. Formation', 'B. Inflammation', 'C. Abnormal status', 'D. Disintegration', 'E. Softening'],
-    answer: 'B. Inflammation'
+    question: '10. شەمدینانی و بایەزیدی سەر بەکام جۆری زارن؟ ',
+    options: ['A. زاری کرمانجی خواروو', 'B. زاری کرمانجی ناوەڕاست', 'C. زاری کرمانجی سەروو', 'D. زاری گۆران', 'E. هیچ کامیان'],
+    answer: 'C. زاری کرمانجی سەروو'
   },
   {
-    question: '11. What is the definition of "Lysis"? ',
-    options: ['A. The process of formation', 'B. The process of disintegration or dissolution', 'C. The process of replication', 'D. The process of clotting', 'E. The process of narrowing'],
-    answer: 'B. The process of disintegration or dissolution'
+    question: '11. ئەو گرفتانەی لە ئەلف و بێی لاتینیدا بەدیدەکرێن چەند جۆرن؟ ',
+    options: ['A. یەک', 'B. دوو', 'C. سێ', 'D. چوار', 'E. پێنج'],
+    answer: 'C. سێ'
   },
   {
-    question: '12. The suffix (-osis) denotes: ',
-    options: ['A. A tumor', 'B. An abnormal status of an organ or tissue', 'C. A decrease in number', 'D. An acute infection', 'E. A surgical opening'],
-    answer: 'B. An abnormal status of an organ or tissue'
+    question: '12. کام لەم زمانانە سەر بە کۆمەڵەی ڕۆژئاوایی نییە؟',
+    options: ['A. زمانە جەرمەنییەکان', 'B. زمانە لاتینییەکان', 'C. زمانە سلاڤیکییەکان', 'D. زمانی کەلتی', 'E. زمانە کۆرییەکان'],
+    answer: 'E. زمانە کۆرییەکان'
   },
   {
-    question: '13. Which suffix indicates a process of formation? ',
-    options: ['A. -lysis', 'B. -poesis', 'C. -osis', 'D. -itis', 'E. -stenosis'],
-    answer: 'B. -poesis'
+    question: '13. زمانەکانی تورکی و مەغۆلی و مەنشوری بە کام جۆری زمان دانراون؟ ',
+    options: ['A. هیندۆ ئەوروپی', 'B. سامی و حامی', 'C. گرووپی زمانە ژاپۆنییەکان', 'D. تۆرانی', 'E. بە زمان دانەنراون 🦃'],
+    answer: 'D. تۆرانی'
   },
   {
-    question: '14. Erythropoesis is the formation of: ',
-    options: ['A. White blood cells', 'B. Platelets', 'C. Red blood cells', 'D. Bone marrow', 'E. Spermatozoa'],
-    answer: 'C. Red blood cells'
+    question: '14. زارەکانی زمانی کوردی چەندن؟ ',
+    options: ['A. یەک', 'B. دوو', 'C. سێ', 'D. چوار', 'E. پێنج'],
+    answer: 'D. چوار'
   },
   {
-    question: '15. A fundamental mental derangement characterized by defective or lost contact with reality is called: ',
-    options: ['A. Neurosis', 'B. Anxiety', 'C. Phobia', 'D. Psychosis', 'E. Obsession'],
-    answer: 'D. Psychosis'
+    question: '15. ئەو زمانەیە کە لەلایەن زۆربەی نووسەران، ئەکادیمیان، زانایان، ڕۆشنبیران و کارگێڕان لە خوێندن و نووسین و زانست و ئەدەبییات و بەڕێوبردنی کارگێڕیدا بەکاردێت: ',
+    options: ['A. زمانی نووسین', 'B. زمانی ستاندارد', 'C. زمانی ئاماژە', 'D. زمانی جەستە', 'E. زمانی شیعر'],
+    answer: 'B. زمانی ستاندارد'
   },
   {
-    question: '16. Which of the following is considered a Neurosis? ',
-    options: ['A. Mania', 'B. Endogenous depression', 'C. Anxiety states', 'D. Schizophrenia', 'E. Dementia'],
-    answer: 'C. Anxiety states'
+    question: '16. موکری و سۆرانی سەر بەکام جۆری زارن؟ ',
+    options: ['A. زاری کرمانجی ناوەڕاست', 'B. زاری کرمانجی خواروو', 'C. زاری گۆران', 'D. زاری کرمانجی سەروو', 'E. هەموویان'],
+    answer: 'A. زاری کرمانجی ناوەڕاست'
   },
   {
-    question: '17. What is an "Exacerbation"? ',
-    options: ['A. The complete cure of a disease', 'B. An active episode of a chronic disease', 'C. The disappearance of symptoms', 'D. The initial onset of a disease', 'E. A generic drug name'],
-    answer: 'B. An active episode of a chronic disease'
+    question: '17. جۆرەکانی زمان چەندن؟',
+    options: ['A. یەک', 'B. دوو', 'C. سێ', 'D. چوار', 'E. پێنج'],
+    answer: 'B. دوو'
+  },
+         {
+    question: '18. بە پێی ئەم گریمانەیە زمان لەو دەنگە غەریزانەوە پەیدابووە کە مرۆڤ بۆ دەربڕینی خۆشی و ناخۆشی و ئازار دەری بڕیوە وەک (ئاخ، ئۆف٬ هتد) و یەکەم گووتن لە شێوەی سەرسوڕمان بووە.',
+    options: ['A. بۆچوونی ئایینی', 'B. بۆچوونی بزاوتن', 'C. بۆچوونی بانگ و قیژە', 'D. بۆچوونی پەیوەندی', 'E. بۆچوونی ڕێکەوتن'],
+    answer: 'C. بۆچوونی بانگ و قیژە'
   },
   {
-    question: '18. The amelioration or disappearance of symptoms in a chronic disease is known as: ',
-    options: ['A. Exacerbation', 'B. Remission', 'C. Relapse', 'D. Recurrence', 'E. Genesis'],
-    answer: 'B. Remission'
+    question: '19. ئەم خێزانە زمانە لە نیشتیمانی عەرەب و باکووری ئەفریقا و بەشێک لە ڕۆژهەڵاتەکەی بەکاردەهێنرێت: ',
+    options: ['A. زمانی عیبری ', 'B. زمانی ئارامی', 'C. تۆرانی ', 'D. هیندۆ ئەوروپی', 'E. سامی و حامی'],
+    answer: 'E. سامی و حامی'
   },
   {
-    question: '19. What is the term for the spitting of blood with expectoration? ',
-    options: ['A. Hematemesis', 'B. Hemoptysis', 'C. Epistaxis', 'D. Hemorrhage', 'E. Melena'],
-    answer: 'B. Hemoptysis'
+    question: '20. هەورامانی و باجەلانی سەر بە کام جۆری زارن؟',
+    options: ['A. زاری گۆران', 'B. زاری کرمانجی سەروو', 'C. زاری کرمانجی خواروو', 'D. زاری کرمانجی ناوەڕاست', 'E. هیچ کامیان'],
+    answer: 'A. زاری گۆران'
   },
   {
-    question: '20. Melaena is defined as: ',
-    options: ['A. Vomiting bright red blood', 'B. Bleeding from the nose', 'C. Passage of black tarry stools due to upper GI bleeding', 'D. Blood in the urine', 'E. Excessive urination'],
-    answer: 'C. Passage of black tarry stools due to upper GI bleeding'
+    question: '21. دوای ئەوەی ئەلفوبێی زمانی عەرەبی بووە بە ئەلفوبێی نووسین لە زمانی کوردیدا، ئەلفوبێ عەرەبی چەند گۆڕانکاریەکی بە خۆیەوە بینی، ئەو گۆڕانکاریانە چەند جۆرن؟',
+    options: ['A. یەک', 'B. دوو', 'C. سێ', 'D. چوار', 'E. پێنج'],
+    answer: 'C. سێ'
   },
-  {
-    question: '21. Epistaxis refers to: ',
-    options: ['A. Bleeding from the gums', 'B. Coughing up blood', 'C. Nose bleeding', 'D. Ear bleeding', 'E. Rectal bleeding'],
-    answer: 'C. Nose bleeding'
-  },
-  {
-    question: '22. Which term means "a narrowed aperture or passage"? ',
-    options: ['A. Stenosis', 'B. Incompetence', 'C. Dilatation', 'D. Aneurysm', 'E. Hernia'],
-    answer: 'A. Stenosis'
-  },
-  {
-    question: '23. Alopecia is defined as: ',
-    options: ['A. Excessive hair growth', 'B. Loss of hair', 'C. Graying of hair', 'D. Infection of the hair follicle', 'E. Yellowing of the eyes'],
-    answer: 'B. Loss of hair'
-  },
-  {
-    question: '24. Urticaria is characterized by which combination of symptoms? ',
-    options: ['A. Pallor, pain, and bleeding', 'B. Erythema, swelling, and pruritis', 'C. Cyanosis, coldness, and numbness', 'D. Jaundice, fever, and nausea', 'E. Coughing, wheezing, and fever'],
-    answer: 'B. Erythema, swelling, and pruritis'
-  },
-  {
-    question: '25. Syncope is another term for: ',
-    options: ['A. A seizure', 'B. A stroke', 'C. A heart attack', 'D. A fainting attack', 'E. An allergic reaction'],
-    answer: 'D. A fainting attack'
-  },
-  {
-    question: '26. Taking a live tissue sample for pathological study is called: ',
-    options: ['A. Necropsy', 'B. Autopsy', 'C. Biopsy', 'D. Necrosis', 'E. Lysis'],
-    answer: 'C. Biopsy'
-  },
-  {
-    question: '27. Necrosis is defined as: ',
-    options: ['A. Postmortem examination', 'B. Pathological localized death of tissue', 'C. Natural cell death', 'D. Tissue regeneration', 'E. Formation of new tissue'],
-    answer: 'B. Pathological localized death of tissue'
-  },
-  {
-    question: '28. What does the acronym "COPD" stand for? ',
-    options: ['A. Chronic Oxygen Pulmonary Disease', 'B. Chronic Obstructive Pulmonary Disease', 'C. Cardiac Obstructive Pulmonary Disorder', 'D. Central Obstructive Pulmonary Disease', 'E. Chronic Obstructive Pediatric Disorder'],
-    answer: 'B. Chronic Obstructive Pulmonary Disease'
-  },
-  {
-    question: '29. Parkinson’s Disease is an example of: ',
-    options: ['A. An acronym', 'B. An abbreviation', 'C. An eponym', 'D. A synonym', 'E. A suffix'],
-    answer: 'C. An eponym'
-  },
-  {
-    question: '30. The medical abbreviation "stat" means: ',
-    options: ['A. As soon as possible', 'B. At once / immediately', 'C. Before meals', 'D. Every day', 'E. Only at night'],
-    answer: 'B. At once / immediately'
-  }
+
 ];
 
          let currentQuestionIndex = 0;
@@ -249,7 +211,7 @@
             <svg class="feedback-icon text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>`;
-        
+
         // --- QUIZ LOGIC FUNCTIONS ---
 
         function loadQuestion() {
@@ -285,7 +247,7 @@
             }
             answered = true;
             nextButton.disabled = false;
-            
+
             const currentQ = quizData[currentQuestionIndex];
             const isCorrect = selectedOptionText === currentQ.answer;
 
@@ -299,7 +261,7 @@
 
         function showFeedback(correctAnswer, selectedButton) {
             const buttons = optionsContainer.querySelectorAll('.option-button');
-            
+
             buttons.forEach(button => {
                 const optionText = button.getAttribute('data-option');
                 const isCorrect = optionText === correctAnswer;
@@ -311,7 +273,7 @@
 
                 // 2. Add visual feedback (Telegram Quiz Style)
                 const iconPlaceholder = button.querySelector('.feedback-placeholder');
-                
+
                 if (isCorrect) {
                     // Always mark the correct answer green
                     button.classList.add('bg-green-100', 'border-green-400');
@@ -344,6 +306,6 @@
             loadQuestion();
         };
 
-    </script> 
- 
-</body></html>
+    </script>
+ </body>
+</html>
